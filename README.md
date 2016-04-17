@@ -8,6 +8,6 @@ Shortly it will be accelerated by CUDA...(actually that was the initial intent t
 
 
 References:
-[Mosegaards Cloth Simulation Coding Tutorial](cg.alexandra.dk/?p=147)
-
+* [Mosegaards Cloth Simulation Coding Tutorial](http://cg.alexandra.dk/?p=147)
+* [Cloth](https://graphics.stanford.edu/~mdfisher/cloth.html)
 
