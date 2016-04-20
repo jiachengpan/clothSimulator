@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
-#include "cloth.h"
+#include "simulator.h"
 
 #ifdef __APPLE__
 #include <glut.h>
@@ -11,7 +11,7 @@
 #include <glm/glm.hpp>
 
 const int HEIGHT = 600, WIDTH = 800;
-bool start = false;
+bool start = true;
 
 // current rotation angle
 static float h_angle = 0.f;
@@ -21,9 +21,10 @@ const int timestep = 2;
 int time_accumulator = 0;
 glm::vec3 position = glm::vec3(0.f, 1.f, 2.f);
 
-Cloth cloth(40, 40, 0.8, 0.8);
+Simulator *simulator;
 
 static int rendered = 0;
+static int rendered_after_start = 0;
 //--------------------------------------------------------------------------------
 void on_idle()
 {
@@ -31,7 +32,8 @@ void on_idle()
   if (time_accumulator > timestep) {
     if (start) {
       for (; time_accumulator > 0; time_accumulator -= timestep) {
-        cloth.timestep(float(timestep) / 1000.f);
+        //if (rendered_after_start++ >= 100) exit(0);
+        simulator->compute_timestep(float(timestep) / 1000.f);
       }
     }
     time_accumulator = 0;
@@ -114,7 +116,7 @@ void display(void)
   glRotatef(h_angle, 0.f, 1.f, 0.f);
 
   draw_grid();
-  cloth.draw();
+  simulator->draw();
 
 	glutSwapBuffers();
 
@@ -211,7 +213,7 @@ void keyboard_func(unsigned char key, int x, int y)
 
 void init()
 {
-  cloth.add_wind(glm::vec3(-.01f, .001f, .01f));
+  simulator = new Simulator(true);
 }
 
 //----------------------------------------------------------------------------

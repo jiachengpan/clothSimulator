@@ -1,3 +1,6 @@
+#ifndef CLOTH_H_
+#define CLOTH_H_
+
 #include <cstdint>
 #include <vector>
 #include <algorithm>
@@ -17,7 +20,6 @@ const float KD_SHEAR  = .1f;
 const float KS_SHEAR  = 35.f;
 const float DAMPING   = -.0125f;
 const glm::vec3 GRAVITY = glm::vec3(0.f, -9.8, 0.f);
-//const glm::vec3 GRAVITY = glm::vec3(0.f, 0.f, 0.f);
 
 struct Cloth {
   vector<glm::vec3> X;
@@ -51,14 +53,16 @@ struct Cloth {
   float size_h;
 
   Cloth(uint32_t w, uint32_t h, float sw, float sh);
+  virtual ~Cloth() {}
   
-  void add_springs(
+  virtual void init();
+  virtual void add_springs(
       float kd_struct, float ks_struct,
       float kd_bend, float ks_bend,
       float kd_shear, float ks_shear);
   void add_wind(glm::vec3 f);
 
-  void timestep(float dt);
+  virtual void timestep(float dt);
 
   void satisfy_constraints();
   void satisfy_spring_constraints(const vector<Spring>& springs);
@@ -78,3 +82,5 @@ struct Cloth {
 
   inline glm::vec3 get_velocity(uint32_t x, float dt) { return (X[x] - X_prev[x]) / dt; }
 };
+
+#endif

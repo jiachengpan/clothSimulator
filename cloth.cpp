@@ -15,21 +15,26 @@ Cloth::Cloth(uint32_t w, uint32_t h, float sw, float sh) :
   for (uint32_t y = 0; y < height; ++y) {
     for (uint32_t x = 0; x < width; ++x) {
       uint32_t pos = x + width * y;
-      X[pos]      = glm::vec3(float(x) / width * size_w - size_w / 2, float(y) / height * size_h, 0.5f);
-      X_prev[pos] = glm::vec3(float(x) / width * size_w - size_w / 2, float(y) / height * size_h, 0.5f);
-      //X[pos]      = glm::vec3(float(x) / width * size_w - size_w / 2, .8f, float(y) / height * size_h);
-      //X_prev[pos] = glm::vec3(float(x) / width * size_w - size_w / 2, .8f, float(y) / height * size_h);
-      M[pos] = m * (.7f + .3 * float(y) / height);
+      //X[pos]      = glm::vec3(float(x) / width * size_w - size_w / 2, float(y) / height * size_h, 0.5f);
+      //X_prev[pos] = glm::vec3(float(x) / width * size_w - size_w / 2, float(y) / height * size_h, 0.5f);
+      X[pos]      = glm::vec3(float(x) / width * size_w - size_w / 2, .8f, float(y) / height * size_h);
+      X_prev[pos] = glm::vec3(float(x) / width * size_w - size_w / 2, .8f, float(y) / height * size_h);
+      //M[pos] = m * (.7f + .3 * float(y) / height);
+      M[pos] = m;
       //if (x == 0) M[pos] = 0.f;
     }
   }
-  //M[0] = 0.;
+  M[0] = 0.;
   M[width-1] = 0.;
-  //M[height * width - width] = 0.;
-  M[height * width - 1] = 0.;
+  M[height * width - width] = 0.;
+  //M[height * width - 1] = 0.;
 
-  add_springs(KD_STRUCT, KS_STRUCT, KD_BEND, KS_BEND, KD_SHEAR, KS_SHEAR);
   //X[0] = glm::vec3(0.1f, .0f, .0f);
+}
+
+void Cloth::init()
+{
+  add_springs(KD_STRUCT, KS_STRUCT, KD_BEND, KS_BEND, KD_SHEAR, KS_SHEAR);
 }
 
 void Cloth::add_wind(glm::vec3 f)
